@@ -1,7 +1,11 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, ModelDefined } from 'sequelize';
 import sequelize from '.';
+import Team from '../../Interfaces/Team';
 
-const teamsModel = sequelize.define('Team', {
+// type teamOption = Optional<Team, 'id'>;
+type teamType = ModelDefined<Team, Team>;
+
+const teamModel: teamType = sequelize.define('Team', {
   id: {
     primaryKey: true,
     autoIncrement: true,
@@ -19,4 +23,4 @@ const teamsModel = sequelize.define('Team', {
   tableName: 'teams',
 });
 
-export default teamsModel;
+export default teamModel;
