@@ -10,12 +10,12 @@ const login = async (req: Request, res: Response): Promise<Response | void> => {
   const result = await userService.userGetByEmail(email);
 
   if (!result) {
-    return res.status(400).json({ message: 'email not exist' });
+    return res.status(401).json({ message: 'Invalid email or password' });
   }
   const validate = compareSync(password, result?.password);
 
   if (!validate) {
-    return res.status(400).json({ message: 'password wrong' });
+    return res.status(401).json({ message: 'Invalid email or password' });
   }
 
   const data: Partial<User> = {

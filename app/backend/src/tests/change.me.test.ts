@@ -76,7 +76,7 @@ describe('All tests', () => {
 			"password": "secret_admin",
 			"email": "admin2@admin.com"});
 		
-		expect(result.status).to.be.deep.equal(400);
+		expect(result.status).to.be.deep.equal(401);
   });
 
 	it('Return userLogin faill with password wrong', async () => {
@@ -85,7 +85,7 @@ describe('All tests', () => {
 			"email": "admin@admin.com"
 		});
 		
-		expect(result.status).to.be.deep.equal(400);
+		expect(result.status).to.be.deep.equal(401);
   });
 
 	it('Return userLogin faill with email and password required', async () => {
