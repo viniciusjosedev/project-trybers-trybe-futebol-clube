@@ -77,6 +77,13 @@ describe('All tests', () => {
 			"email": "admin2@admin.com"});
 		
 		expect(result.status).to.be.deep.equal(401);
+
+		const result2 = await chai.request(app).post('/login').send({
+			"password": "secret_admin",
+			"email": "@admin.com"});
+
+		expect(result2.status).to.be.deep.equal(401);
+
   });
 
 	it('Return userLogin faill with password wrong', async () => {

@@ -10,4 +10,6 @@ userRoute.post(
   userController.login,
 );
 
+userRoute.get('/login/role', userController.getRole);
+
 export default userRoute;
