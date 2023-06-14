@@ -8,11 +8,13 @@ import Example from '../database/models/ExampleModel';
 
 import { Response } from 'superagent';
 
+import resultTeamFindAll from './mocks/resultTeamFindAll';
+
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Seu teste', () => {
+describe('All tests', () => {
   /**
    * Exemplo do uso de stubs com tipos
    */
@@ -39,7 +41,15 @@ describe('Seu teste', () => {
   //   expect(...)
   // });
 
-  it('Seu sub-teste', () => {
-    expect(false).to.be.eq(true);
+  it('Return teamFindAll', async () => {
+		const result = await chai.request(app).get('/teams');
+		
+		expect(result.body).to.be.deep.equal(resultTeamFindAll);
+  });
+
+	it('Return teamFindById', async () => {
+		const result = await chai.request(app).get('/teams/1');
+		
+		expect(result.body).to.be.deep.equal(resultTeamFindAll[0]);
   });
 });
