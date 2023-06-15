@@ -1,4 +1,4 @@
-import { Op } from 'sequelize';
+// import { Op } from 'sequelize';
 import teamModel from '../database/models/teamModel';
 import Matche from '../Interfaces/Matche';
 import matcheModel from '../database/models/matcheModel';
