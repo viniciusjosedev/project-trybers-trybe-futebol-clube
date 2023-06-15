@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import teamModel from '../database/models/teamModel';
 import Matche from '../Interfaces/Matche';
 import matcheModel from '../database/models/matcheModel';
@@ -44,11 +45,19 @@ Promise<number> => sequelize.transaction(async (t) => {
 
   return result;
 });
+
 const matcheCreate = async (data: Matche): Promise<Matche> => sequelize.transaction(async (t) => {
   const create = await matcheModel.create(data, { transaction: t });
 
   return create.dataValues;
 });
+
+// const matchGetByTeamId = async (id: string | number): Promise<Matche | undefined> => {
+//   const result = await matcheModel.findOne({ where: {
+//     [Op.or]: [{ homeTeamId: id }, { awayTeamId: id }] } });
+
+//   return result?.dataValues;
+// };
 
 export default {
   matcheGetAll,
@@ -56,4 +65,5 @@ export default {
   matcheUpdateInProgress,
   matcheUpdate,
   matcheCreate,
+  // matchGetByTeamId,
 };
