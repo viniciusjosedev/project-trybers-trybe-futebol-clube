@@ -137,4 +137,10 @@ describe('All tests', () => {
 				
 		expect(result.status).to.be.deep.equal(200);
   });
+
+	it('Return /matches?inProgress=true with sucess', async () => {
+		const result = await chai.request(app).get('/matches?inProgress=true').send();
+				
+		expect(result.status).to.be.deep.equal(200);
+  });
 });

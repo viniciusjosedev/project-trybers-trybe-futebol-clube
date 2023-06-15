@@ -3,7 +3,18 @@ import Matche from '../Interfaces/Matche';
 import matcheModel from '../database/models/matcheModel';
 
 const matcheGetAll = async (): Promise<Matche[]> => {
+  const result = await matcheModel.findAll({ include: [
+    { model: teamModel, as: 'homeTeam', attributes: { exclude: ['id'] } },
+    { model: teamModel, as: 'awayTeam', attributes: { exclude: ['id'] } },
+  ],
+  });
+
+  return result.map((e) => e.dataValues);
+};
+
+const matcheGetInProgress = async (bool: boolean): Promise<Matche[]> => {
   const result = await matcheModel.findAll({
+    where: { inProgress: bool },
     include: [
       { model: teamModel, as: 'homeTeam', attributes: { exclude: ['id'] } },
       { model: teamModel, as: 'awayTeam', attributes: { exclude: ['id'] } },
@@ -15,4 +26,5 @@ const matcheGetAll = async (): Promise<Matche[]> => {
 
 export default {
   matcheGetAll,
+  matcheGetInProgress,
 };
