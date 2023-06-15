@@ -29,4 +29,6 @@ EXPOSE 3001
 
 # Configurar os comandos para iniciar a aplicação de acordo com as boas práticas
 
-ENTRYPOINT ["sh", "-c", "tail -f /dev/null"]
+# ENTRYPOINT ["sh", "-c", "tail -f /dev/null"]
+
+ENTRYPOINT ["sh", "-c", "npm run dev"]
