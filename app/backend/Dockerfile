@@ -26,6 +26,6 @@ EXPOSE 3001
 
 # ENTRYPOINT ["sh", "-c", "tail -f /dev/null"]
 
-ENTRYPOINT ["sh", "-c", "npm run dev"]
+ENTRYPOINT ["npm", "run", "start"]
 
 # CMD ["start"]
