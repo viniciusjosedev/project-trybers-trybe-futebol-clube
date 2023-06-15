@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import userController from '../controllers/userController';
 import userValidate from '../middlewares/userValidate';
+import isAuth from '../auth/isAuth';
 
 const userRoute = Router();
 
@@ -10,6 +11,6 @@ userRoute.post(
   userController.login,
 );
 
-userRoute.get('/login/role', userController.getRole);
+userRoute.get('/login/role', isAuth, userController.getRole);
 
 export default userRoute;

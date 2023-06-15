@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import matchesService from '../services/matchesService';
+import RequestWithData from '../Interfaces/RequestWithData';
 
 const matcheGetAll = async (req: Request, res: Response): Promise<Response | void> => {
   const { inProgress } = req.query;
@@ -21,6 +22,15 @@ const matcheGetAll = async (req: Request, res: Response): Promise<Response | voi
   return res.status(200).json(result);
 };
 
+const matcheUpdate = async (req: RequestWithData, res: Response): Promise<Response | void> => {
+  const { id } = req.params;
+
+  await matchesService.matcheUpdate(id);
+
+  return res.status(200).json({ message: 'Finished' });
+};
+
 export default {
   matcheGetAll,
+  matcheUpdate,
 };
