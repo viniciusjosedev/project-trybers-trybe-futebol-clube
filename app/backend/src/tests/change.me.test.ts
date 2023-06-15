@@ -16,7 +16,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-const Authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwidXNlcm5hbWUiOiJBZG1pbiIsImlkIjoxLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNjg2NzY1OTgyLCJleHAiOjE2ODczNzA3ODJ9.KsvL6NHWOKTjo_Z0vyfBbIpcgoS--Ayie6q421qg-2g'
+const Authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInVzZXJuYW1lIjoiQWRtaW4iLCJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjg2Nzk4Mjg4LCJleHAiOjE2ODc0MDMwODh9.Ec17E3dZRM49r77xW5Zufe2uoSRPpRH98Hc9ReY2J_s'
 
 describe('All tests', () => {
   /**
@@ -141,6 +141,13 @@ describe('All tests', () => {
 	it('Return /matches?inProgress=true with sucess', async () => {
 		const result = await chai.request(app).get('/matches?inProgress=true').send();
 				
+		expect(result.status).to.be.deep.equal(200);
+  });
+
+	it('Return /matches/:id/finish with sucess', async () => {
+		const result = await chai.request(app).patch('/matches/1/finish')
+		.set('Authorization', Authorization).send();		
+
 		expect(result.status).to.be.deep.equal(200);
   });
 });
