@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import userController from '../controllers/userController';
-// import userValidate from '../middlewares/userValidate';
+import userValidate from '../middlewares/userValidate';
 import isAuth from '../auth/isAuth';
 
 const userRoute = Router();
 
 userRoute.post(
   '/login',
-  // userValidate.userBodyLoginValidate,
+  userValidate.userBodyLoginValidate,
   userController.login,
 );
 
