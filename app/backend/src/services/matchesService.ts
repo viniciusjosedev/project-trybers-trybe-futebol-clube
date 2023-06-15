@@ -1,8 +1,15 @@
 // import { Op } from 'sequelize';
+import Team from '../Interfaces/Team';
 import teamModel from '../database/models/teamModel';
 import Matche from '../Interfaces/Matche';
 import matcheModel from '../database/models/matcheModel';
 import sequelize from '../database/models';
+
+type MatcheWithHomeTeam = Matche & {
+  homeTeam: {
+    dataValues: Team
+  }
+};
 
 const matcheGetAll = async (): Promise<Matche[]> => {
   const result = await matcheModel.findAll({ include: [
@@ -14,7 +21,7 @@ const matcheGetAll = async (): Promise<Matche[]> => {
   return result.map((e) => e.dataValues);
 };
 
-const matcheGetInProgress = async (bool: boolean): Promise<Matche[]> => {
+const matcheGetInProgress = async (bool: boolean): Promise<MatcheWithHomeTeam[]> => {
   const result = await matcheModel.findAll({
     where: { inProgress: bool },
     include: [
@@ -23,7 +30,7 @@ const matcheGetInProgress = async (bool: boolean): Promise<Matche[]> => {
     ],
   });
 
-  return result.map((e) => e.dataValues);
+  return result.map((e) => e.dataValues) as MatcheWithHomeTeam[];
 };
 
 const matcheUpdateInProgress = async (id: string | number):
@@ -52,12 +59,14 @@ const matcheCreate = async (data: Matche): Promise<Matche> => sequelize.transact
   return create.dataValues;
 });
 
-// const matchGetByTeamId = async (id: string | number): Promise<Matche | undefined> => {
-//   const result = await matcheModel.findOne({ where: {
-//     [Op.or]: [{ homeTeamId: id }, { awayTeamId: id }] } });
+const matchGetByHomeTeamId = async (id: string | number): Promise<Matche[] | undefined> => {
+  const result = await matcheModel.findAll({ where: {
+    homeTeamId: id,
+    inProgress: false,
+  } });
 
-//   return result?.dataValues;
-// };
+  return result.map((e) => e.dataValues);
+};
 
 export default {
   matcheGetAll,
@@ -65,5 +74,5 @@ export default {
   matcheUpdateInProgress,
   matcheUpdate,
   matcheCreate,
-  // matchGetByTeamId,
+  matchGetByHomeTeamId,
 };
