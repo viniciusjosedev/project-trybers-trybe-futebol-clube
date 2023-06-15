@@ -178,4 +178,11 @@ describe('All tests', () => {
 
 		expect(result.status).to.be.deep.equal(201);
   });
+
+	it('Return /leaderboard/home with sucess', async () => {
+		const result = await chai.request(app).get('/leaderboard/home')
+		.set('Authorization', Authorization).send();		
+
+		expect(result.status).to.be.deep.equal(200);
+  });
 });
