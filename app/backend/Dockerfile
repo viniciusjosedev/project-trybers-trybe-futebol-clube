@@ -17,12 +17,7 @@ RUN npm install
 
 # Copiar o restante dos arquivos da aplicação para o container
 
-COPY ./src /app-backend/src
-COPY ./.eslintignore /app-backend/
-COPY ./.eslintrc.json /app-backend/
-COPY ./.sequelizerc /app-backend/
-COPY ./nyc.config.js /app-backend/
-COPY ./tsconfig.json /app-backend/
+COPY . ./
 # Sinalize que aplicação expõe a porta 3001
 
 EXPOSE 3001
@@ -31,4 +26,6 @@ EXPOSE 3001
 
 # ENTRYPOINT ["sh", "-c", "tail -f /dev/null"]
 
-ENTRYPOINT ["sh", "-c", "npm run start"]
+ENTRYPOINT [ "npm", "run" ]
+
+CMD ["start"]
