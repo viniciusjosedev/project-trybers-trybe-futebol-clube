@@ -1,33 +1,33 @@
-import { NextFunction, Request, Response } from 'express';
-import validations from './validations';
+// import { NextFunction, Request, Response } from 'express';
+// import validations from './validations';
 
-const matcheBodyUpdateInProgressValidate = async (req: Request, res: Response, next: NextFunction):
-Promise<Response | void> => {
-  const { body } = req;
+// const matcheBodyUpdateInProgressValidate = async (req: Request, res: Response, next: NextFunction):
+// Promise<Response | void> => {
+//   const { body } = req;
 
-  const { message } = validations.matcheBodyUpdateInProgressValidate(body);
+//   const { message } = validations.matcheBodyUpdateInProgressValidate(body);
 
-  if (message) {
-    return res.status(400).json({ message });
-  }
+//   if (message) {
+//     return res.status(400).json({ message });
+//   }
 
-  next();
-};
+//   next();
+// };
 
-const matcheBodyUpdateValidate = async (req: Request, res: Response, next: NextFunction):
-Promise<Response | void> => {
-  const { body } = req;
+// const matcheBodyUpdateValidate = async (req: Request, res: Response, next: NextFunction):
+// Promise<Response | void> => {
+//   const { body } = req;
 
-  const { message } = validations.matcheBodyUpdateValidate(body);
+//   const { message } = validations.matcheBodyUpdateValidate(body);
 
-  if (message) {
-    return res.status(400).json({ message });
-  }
+//   if (message) {
+//     return res.status(400).json({ message });
+//   }
 
-  next();
-};
+//   next();
+// };
 
-export default {
-  matcheBodyUpdateInProgressValidate,
-  matcheBodyUpdateValidate,
-};
+// export default {
+//   matcheBodyUpdateInProgressValidate,
+//   matcheBodyUpdateValidate,
+// };

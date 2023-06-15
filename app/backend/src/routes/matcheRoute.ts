@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import matcheController from '../controllers/matcheController';
 import isAuth from '../auth/isAuth';
-import matcheValidate from '../middlewares/matcheValidate';
+// import matcheValidate from '../middlewares/matcheValidate';
 
 const matcheRoute = Router();
 
@@ -10,14 +10,14 @@ matcheRoute.get('/matches', matcheController.matcheGetAll);
 matcheRoute.post(
   '/matches',
   isAuth,
-  matcheValidate.matcheBodyUpdateInProgressValidate,
+  // matcheValidate.matcheBodyUpdateInProgressValidate,
   matcheController.matcheCreate,
 );
 
 matcheRoute.patch(
   '/matches/:id',
   isAuth,
-  matcheValidate.matcheBodyUpdateValidate,
+  // matcheValidate.matcheBodyUpdateValidate,
   matcheController.matcheUpdate,
 );
 
