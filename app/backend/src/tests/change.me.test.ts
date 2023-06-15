@@ -144,10 +144,38 @@ describe('All tests', () => {
 		expect(result.status).to.be.deep.equal(200);
   });
 
+	it('Return /matches?inProgress=false with sucess', async () => {
+		const result = await chai.request(app).get('/matches?inProgress=false').send();
+				
+		expect(result.status).to.be.deep.equal(200);
+  });
+
 	it('Return /matches/:id/finish with sucess', async () => {
 		const result = await chai.request(app).patch('/matches/1/finish')
 		.set('Authorization', Authorization).send();		
 
 		expect(result.status).to.be.deep.equal(200);
+  });
+
+	it('Return /matches/:id with sucess', async () => {
+		const result = await chai.request(app).patch('/matches/1')
+		.set('Authorization', Authorization).send({
+			"homeTeamGoals": 3,
+			"awayTeamGoals": 1
+		});		
+
+		expect(result.status).to.be.deep.equal(200);
+  });
+
+	it('Return /matches with sucess', async () => {
+		const result = await chai.request(app).post('/matches')
+		.set('Authorization', Authorization).send({
+			"homeTeamId": 16, // O valor deve ser o id do time
+			"awayTeamId": 8, // O valor deve ser o id do time
+			"homeTeamGoals": 2,
+			"awayTeamGoals": 2,
+		});		
+
+		expect(result.status).to.be.deep.equal(201);
   });
 });
