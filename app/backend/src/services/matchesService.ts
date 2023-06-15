@@ -25,7 +25,7 @@ const matcheGetInProgress = async (bool: boolean): Promise<Matche[]> => {
   return result.map((e) => e.dataValues);
 };
 
-const matcheUpdate = async (id: string | number):
+const matcheUpdateInProgress = async (id: string | number):
 Promise<number> => sequelize.transaction(async (t) => {
   const [result] = await matcheModel.update({ inProgress: false }, {
     where: { id },
@@ -35,8 +35,25 @@ Promise<number> => sequelize.transaction(async (t) => {
   return result;
 });
 
+const matcheUpdate = async (data: Partial<Matche>, id: number | string):
+Promise<number> => sequelize.transaction(async (t) => {
+  const [result] = await matcheModel.update(data, {
+    where: { id },
+    transaction: t,
+  });
+
+  return result;
+});
+const matcheCreate = async (data: Matche): Promise<Matche> => sequelize.transaction(async (t) => {
+  const create = await matcheModel.create(data, { transaction: t });
+
+  return create.dataValues;
+});
+
 export default {
   matcheGetAll,
   matcheGetInProgress,
+  matcheUpdateInProgress,
   matcheUpdate,
+  matcheCreate,
 };

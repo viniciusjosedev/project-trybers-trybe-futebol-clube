@@ -44,6 +44,7 @@ const matcheModel: matcheType = sequelize.define('Matche', {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     field: 'in_progress',
+    defaultValue: true,
   },
 }, {
   tableName: 'matches',

@@ -1,8 +1,8 @@
 export default interface Matche {
-  id: number;
+  id?: number;
   homeTeamId: number;
   homeTeamGoals: number;
   awayTeamId: number;
   awayTeamGoals: number;
-  inProgress: boolean
+  inProgress?: boolean
 }
