@@ -1,4 +1,4 @@
-// import { Op } from 'sequelize';
+import { Op } from 'sequelize';
 import Team from '../Interfaces/Team';
 import teamModel from '../database/models/teamModel';
 import Matche from '../Interfaces/Matche';
@@ -60,7 +60,9 @@ const matcheCreate = async (data: Matche): Promise<Matche> => sequelize.transact
 });
 
 const matchGetByHomeTeamId = async (data: object): Promise<Matche[] | undefined> => {
-  const result = await matcheModel.findAll({ where: { ...data, inProgress: false } });
+  const result = await matcheModel.findAll({ where: {
+    [Op.or]: { ...data }, inProgress: false,
+  } });
 
   return result.map((e) => e.dataValues);
 };

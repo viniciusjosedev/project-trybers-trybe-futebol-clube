@@ -2,7 +2,7 @@ import * as express from 'express';
 import teamRoute from './routes/teamRoute';
 import userRoute from './routes/userRoute';
 import matcheRoute from './routes/matcheRoute';
-import leaderboardRoute from './routes/leaderboarService';
+import leaderboardRoute from './routes/leaderboarRoute';
 
 class App {
   public app: express.Express;

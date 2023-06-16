@@ -158,7 +158,49 @@ const leaderboardGetAway = async (_req: Request, res: Response): Promise<Respons
   return res.status(200).json(data);
 };
 
+const leaderboardGetComplement = (teste1: Data, teste2: Data) => {
+  const result = {
+    name: teste1.name,
+    totalVictories: teste1.totalVictories + teste2.totalVictories,
+    totalPoints: teste1.totalPoints + teste2.totalPoints,
+    totalDraws: teste1.totalDraws + teste2.totalDraws,
+    totalLosses: teste1.totalLosses + teste2.totalLosses,
+    totalGames: teste1.totalGames + teste2.totalGames,
+    goalsFavor: teste1.goalsFavor + teste2.goalsFavor,
+    goalsOwn: teste1.goalsOwn + teste2.goalsOwn,
+  } as Data;
+
+  result.efficiency = Number(((result.totalPoints / (result.totalGames * 3)) * 100).toFixed(2));
+  result.goalsBalance = result.goalsFavor - result.goalsOwn;
+
+  return result;
+};
+
+const leaderboardGet = async (_req: Request, res: Response): Promise<Response | void> => {
+  const allTeams = await teamService.teamGetAll();
+
+  const data = await Promise.all(allTeams.map(async (e, _i) => {
+    const result = await matchesService.matchGetByHomeTeamId({
+      homeTeamId: e.id,
+    });
+
+    const result2 = await matchesService.matchGetByHomeTeamId({
+      awayTeamId: e.id,
+    });
+
+    const teste1 = complementLeaderboardGetHome(result, e.teamName);
+    const teste2 = complementLeaderboardGetAway(result2, e.teamName);
+
+    return leaderboardGetComplement(teste1, teste2);
+  }));
+
+  data.sort(sortData);
+
+  return res.status(200).json(data);
+};
+
 export default {
   leaderboardGetHome,
   leaderboardGetAway,
+  leaderboardGet,
 };

@@ -192,4 +192,11 @@ describe('All tests', () => {
 
 		expect(result.status).to.be.deep.equal(200);
   });
+
+	it('Return /leaderboard with sucess', async () => {
+		const result = await chai.request(app).get('/leaderboard')
+		.set('Authorization', Authorization).send();		
+
+		expect(result.status).to.be.deep.equal(200);
+  });
 });
