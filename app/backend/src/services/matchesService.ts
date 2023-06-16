@@ -59,11 +59,8 @@ const matcheCreate = async (data: Matche): Promise<Matche> => sequelize.transact
   return create.dataValues;
 });
 
-const matchGetByHomeTeamId = async (id: string | number): Promise<Matche[] | undefined> => {
-  const result = await matcheModel.findAll({ where: {
-    homeTeamId: id,
-    inProgress: false,
-  } });
+const matchGetByHomeTeamId = async (data: object): Promise<Matche[] | undefined> => {
+  const result = await matcheModel.findAll({ where: { ...data, inProgress: false } });
 
   return result.map((e) => e.dataValues);
 };

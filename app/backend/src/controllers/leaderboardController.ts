@@ -29,7 +29,20 @@ const generateData = () => ({
   totalVictories: 0,
 });
 
-const complementIfs = (o: Matche, data: Data) => {
+const sortData = (a: Data, b: Data) => {
+  if (a.totalPoints !== b.totalPoints) {
+    return b.totalPoints - a.totalPoints;
+  }
+  if (a.totalVictories !== b.totalVictories) {
+    return b.totalVictories - a.totalVictories;
+  }
+  if (a.goalsBalance !== b.goalsBalance) {
+    return b.goalsBalance - a.goalsBalance;
+  }
+  return b.goalsFavor - a.goalsFavor;
+};
+
+const complementIfsHomeTeam = (o: Matche, data: Data) => {
   const result = data;
   if (o.homeTeamGoals === o.awayTeamGoals) {
     result.totalPoints += 1;
@@ -50,12 +63,34 @@ const complementIfs = (o: Matche, data: Data) => {
   return result;
 };
 
-const complementLeaderboardGetHome = (result: Matche[] | undefined, name: string): Data => {
+const complementIfsAwayTeam = (o: Matche, data: Data) => {
+  const result = data;
+  if (o.awayTeamGoals === o.homeTeamGoals) {
+    result.totalPoints += 1;
+    result.totalDraws += 1;
+    result.totalGames += 1;
+  }
+  if (o.awayTeamGoals > o.homeTeamGoals) {
+    result.totalPoints += 3;
+    result.totalVictories += 1;
+    result.totalGames += 1;
+  }
+  if (o.awayTeamGoals < o.homeTeamGoals) {
+    result.totalPoints += 0;
+    result.totalLosses += 1;
+    result.totalGames += 1;
+  }
+
+  return result;
+};
+
+const complementLeaderboardGetHome = (result: Matche[] | undefined, name: string)
+: Data => {
   const data: Data = generateData();
   data.name = name;
 
   result?.forEach((o) => {
-    const complement = complementIfs(o, data);
+    const complement = complementIfsHomeTeam(o, data);
 
     data.totalPoints = complement.totalPoints;
     data.totalDraws = complement.totalDraws;
@@ -72,32 +107,58 @@ const complementLeaderboardGetHome = (result: Matche[] | undefined, name: string
   return data;
 };
 
+const complementLeaderboardGetAway = (result: Matche[] | undefined, name: string)
+: Data => {
+  const data: Data = generateData();
+  data.name = name;
+
+  result?.forEach((o) => {
+    const complement = complementIfsAwayTeam(o, data);
+
+    data.totalPoints = complement.totalPoints;
+    data.totalDraws = complement.totalDraws;
+    data.totalLosses = complement.totalLosses;
+    data.totalGames = complement.totalGames;
+
+    data.goalsFavor += o.awayTeamGoals;
+    data.goalsOwn += o.homeTeamGoals;
+
+    data.efficiency = Number(((data.totalPoints / (data.totalGames * 3)) * 100).toFixed(2));
+    data.goalsBalance = data.goalsFavor - data.goalsOwn;
+  });
+
+  return data;
+};
+
 const leaderboardGetHome = async (_req: Request, res: Response): Promise<Response | void> => {
   const allTeams = await teamService.teamGetAll();
 
   const data = await Promise.all(allTeams.map(async (e, _i) => {
-    const result = await matchesService.matchGetByHomeTeamId(e.id);
+    const result = await matchesService.matchGetByHomeTeamId({ homeTeamId: e.id });
 
-    // console.log(result);
     return complementLeaderboardGetHome(result, e.teamName);
   }));
 
-  data.sort((a, b) => {
-    if (a.totalPoints !== b.totalPoints) {
-      return b.totalPoints - a.totalPoints;
-    }
-    if (a.totalVictories !== b.totalVictories) {
-      return b.totalVictories - a.totalVictories;
-    }
-    if (a.goalsBalance !== b.goalsBalance) {
-      return b.goalsBalance - a.goalsBalance;
-    }
-    return b.goalsFavor - a.goalsFavor;
-  });
+  data.sort(sortData);
+
+  return res.status(200).json(data);
+};
+
+const leaderboardGetAway = async (_req: Request, res: Response): Promise<Response | void> => {
+  const allTeams = await teamService.teamGetAll();
+
+  const data = await Promise.all(allTeams.map(async (e, _i) => {
+    const result = await matchesService.matchGetByHomeTeamId({ awayTeamId: e.id });
+
+    return complementLeaderboardGetAway(result, e.teamName);
+  }));
+
+  data.sort(sortData);
 
   return res.status(200).json(data);
 };
 
 export default {
   leaderboardGetHome,
+  leaderboardGetAway,
 };
